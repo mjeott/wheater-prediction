@@ -1,8 +1,11 @@
 import pickle
 import streamlit as st
+import numpy as np
+from sklearn.preprocessing import StandardScaler
 
-# Membaca model yang telah dilatih
-prediction_model = pickle.load(open('prediksi_cuaca.sav', 'rb'))
+# Membaca model dan scaler yang telah dilatih
+prediction_model = pickle.load(open('prediksi_cuaca_model.sav', 'rb'))
+scaler = pickle.load(open('prediksi_cuaca_scaler.sav', 'rb'))
 
 # Judul halaman web
 st.title('Prediksi Cuaca')
@@ -24,8 +27,12 @@ weather_message = ''
 
 # Tombol untuk melakukan prediksi
 if st.button('Lihat Hasil Prediksi'):
+    # Standarisasi data input
+    input_data = np.array([[precipitation, temp_max, temp_min, wind]])
+    std_data = scaler.transform(input_data)
+
     # Prediksi cuaca berdasarkan input data
-    weather_prediction = prediction_model.predict([[precipitation, temp_max, temp_min, wind]])
+    weather_prediction = prediction_model.predict(std_data)
 
     # Interpretasi hasil prediksi
     if weather_prediction[0] == 0:
@@ -35,8 +42,5 @@ if st.button('Lihat Hasil Prediksi'):
     else:
         weather_message = 'Cuaca tidak aman untuk keluar rumah.'
 
-        
-    
     # Menampilkan hasil prediksi
     st.success(weather_message)
-
