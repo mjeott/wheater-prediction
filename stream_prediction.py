@@ -34,7 +34,7 @@ if st.button('Lihat Hasil Prediksi'):
     # Prediksi cuaca berdasarkan input data
     weather_prediction = prediction_model.predict(std_data)
 
-    # Interpretasi hasil prediksi
+    # Interpretasi hasil prgitediksi
     if weather_prediction[0] == 0:
         weather_message = 'Cuaca cerah, aman untuk keluar rumah.'
     elif weather_prediction[0] == 1:
